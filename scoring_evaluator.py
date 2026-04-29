@@ -1,14 +1,37 @@
 import json
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Any
 
 
 BANNED_PHRASES = [
     "world-class talent",
+    "world-class",
+    "top talent",
+    "a-players",
     "rockstar",
     "ninja",
+    "wizard",
+    "skyrocket",
+    "supercharge",
+    "10x",
+    "i hope this email finds you well",
+    "just following up",
+    "circling back",
+    "quick question",
+    "quick chat",
+    "synergize",
+    "synergy",
+    "leverage",
+    "ecosystem",
+    "game-changer",
+    "disruptor",
+    "paradigm shift",
+    "you'll regret missing this",
+    "don't miss out",
+    "per my last email",
     "you are clearly behind competitors",
     "following up again",
 ]
@@ -42,11 +65,50 @@ def _word_count(text: str) -> int:
     return len(re.findall(r"\S+", text))
 
 
-def evaluate_task(task: Dict) -> ScoreBreakdown:
-    body = task["candidate_output"]["body"]
-    subject = task["candidate_output"]["subject"]
-    cta = task["candidate_output"].get("cta", "")
-    input_fields = task["input_fields"]
+def _validate_inputs(task: Dict[str, Any], agent_output: Dict[str, Any]) -> Tuple[str, str, str, Dict[str, Any]]:
+    if not isinstance(task, dict) or not isinstance(agent_output, dict):
+        raise ValueError("task and agent_output must both be dictionaries")
+    if "input_fields" not in task:
+        raise ValueError("task missing input_fields")
+    body = str(agent_output.get("body", ""))
+    subject = str(agent_output.get("subject", ""))
+    cta = str(agent_output.get("cta", ""))
+    input_fields = task.get("input_fields", {})
+    return body, subject, cta, input_fields
+
+
+def evaluate_task(task: Dict[str, Any], agent_output: Dict[str, Any]) -> ScoreBreakdown:
+    """
+    Numerical scoring contract:
+    - Inputs: task object + agent_output object
+    - Output: ScoreBreakdown with score in [0, 100]
+
+    Calibration guide (dimension-level):
+    - 1.0 ~= "5/5 quality": constraint clearly satisfied
+    - 0.6-0.8 ~= "3/5 quality": borderline / partially satisfied
+    - 0.0 ~= "1/5 quality": clear failure
+    """
+    try:
+        body, subject, cta, input_fields = _validate_inputs(task, agent_output)
+    except Exception:
+        # Default-on-failure behavior for malformed agent output.
+        return ScoreBreakdown(
+            score=0.0,
+            passed=False,
+            dimensions={
+                "groundedness": 0.0,
+                "bench_commitment_safety": 0.0,
+                "tone_marker_score": 0.0,
+                "cta_and_structure": 0.0,
+                "policy_compliance": 0.0,
+            },
+            flags={
+                "has_signal_reference": False,
+                "unsafe_commitment": True,
+                "policy_violation": True,
+                "malformed_output": True,
+            },
+        )
 
     grounded = 1.0 if _contains_any(body, SIGNAL_WORDS) else 0.0
 
@@ -66,9 +128,13 @@ def evaluate_task(task: Dict) -> ScoreBreakdown:
     tone_marker_score = (direct + professional + non_condescending + honest) / 4.0
 
     one_ask = cta == "book_discovery_call"
-    cta_and_structure = 1.0 if _word_count(body) <= 120 and one_ask and len(subject) <= 60 else 0.0
+    message_type = str(task.get("metadata", {}).get("message_type", "cold")).lower()
+    max_words = 120 if message_type == "cold" else (200 if message_type == "warm" else 100)
+    cta_and_structure = 1.0 if _word_count(body) <= max_words and one_ask and len(subject) <= 60 else 0.0
 
     policy_compliance = 0.0 if _contains_any(body, BANNED_PHRASES) else 1.0
+    if " bench " in f" {body.lower()} ":
+        policy_compliance = 0.0
 
     dims = {
         "groundedness": grounded,
@@ -104,7 +170,7 @@ def evaluate_file(path: Path) -> Tuple[int, float]:
                 continue
             rows += 1
             task = json.loads(line)
-            result = evaluate_task(task)
+            result = evaluate_task(task, task.get("candidate_output", {}))
             if result.passed:
                 passed += 1
     pass_rate = (passed / rows) if rows else 0.0
@@ -113,6 +179,9 @@ def evaluate_file(path: Path) -> Tuple[int, float]:
 
 if __name__ == "__main__":
     root = Path(__file__).resolve().parent
-    sample = root / "tenacious_bench_v0.1" / "dev" / "tasks.jsonl"
+    if len(sys.argv) > 1:
+        sample = Path(sys.argv[1])
+    else:
+        sample = root / "tenacious_bench_v0.1" / "dev" / "tasks.jsonl"
     n, pr = evaluate_file(sample)
     print(f"Evaluated {n} tasks from {sample.name}. pass_rate={pr:.3f}")

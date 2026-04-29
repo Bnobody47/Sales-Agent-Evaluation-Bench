@@ -10,5 +10,22 @@
     "spot_check": "eval_tier_judge"
   },
   "rotation_policy": "generator_family != judge_family for each task",
+  "judge_thresholds": {
+    "input_coherence": ">= 3",
+    "ground_truth_verifiability": ">= 3",
+    "rubric_application_clarity": ">= 3"
+  },
+  "pairwise_dedup_sample_winners": [
+    "tb_v01_0128",
+    "tb_v01_0237",
+    "tb_v01_0041",
+    "tb_v01_0064",
+    "tb_v01_0038",
+    "tb_v01_0079",
+    "tb_v01_0186",
+    "tb_v01_0219",
+    "tb_v01_0178",
+    "tb_v01_0032"
+  ],
   "status": "completed"
 }

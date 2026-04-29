@@ -6,11 +6,16 @@ The strongest takeaway is that synthetic data quality is mostly a pipeline-desig
 
 ## Point of disagreement
 
-I disagree with broad recommendations that maximize synthetic diversity before domain constraints are fully encoded. For Tenacious outreach, unconstrained diversity increases fluent but commercially invalid outputs (over-commitments, unsupported claims). In this domain, constraint-first generation with narrower controlled variation should come before maximal diversity.
+Specific design choice I disagree with: prioritizing broad diversity early in authoring before hard domain constraints are encoded (data-diversity emphasis, Section 4; operational recommendations, Section 6). For Tenacious outreach, unconstrained diversity increases fluent but commercially invalid outputs (over-commitments, unsupported claims). In this domain, constraint-first generation with narrower controlled variation should come before maximal diversity.
 
 ## Evidence against the paper's default posture
 
-Week 10 probe categories show failures are often "good language, wrong commitment." This means realism constraints must be hard-coded earlier than some generic synthetic-data recipes suggest.
+Week 10 evidence:
+- Probes `P-007`, `P-008`, `P-009`: over-commitment under bench mismatch.
+- Probes `P-004`, `P-005`, `P-006`: unsupported claims under weak public signal.
+- Traces `tau_dev_tier_baseline_01`, `tau_dev_tier_baseline_02`, `tau_reproduction_check_02`: fluent language but policy-invalid commitments.
+
+This evidence contradicts an "expand diversity first" pipeline for this domain. The failure mechanism appears before phrasing diversity matters.
 
 ## Week 11 design decisions driven by this memo
 

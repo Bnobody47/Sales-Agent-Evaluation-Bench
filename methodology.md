@@ -17,6 +17,7 @@ Paper anchors supporting Path B:
 - SimPO / ORPO (reference-free preference optimization)
 - Prometheus 2 (judge specialization)
 - Preference leakage guidance (Li et al.)
+- Tenacious Style Guide v2 with 12 good/12 bad labeled drafts (used as calibration corpus for tone-preservation and banned-phrase checks)
 
 ## 2) Tenacious-Bench schema dimensions
 
@@ -31,6 +32,10 @@ Scoring evaluator:
 - Deterministic weighted score, threshold = 78/100
 - Rule-based checks for verifiable constraints
 - Judge-hook placeholder for richer tone adjudication
+- Rule calibration aligned to Style Guide v2:
+  - tone marker threshold: regenerate if any marker < 4/5
+  - banned phrase scan expanded to full v2 list
+  - external "bench" wording treated as Professional-marker failure
 
 ## 3) Dataset construction plan and implementation
 
@@ -54,9 +59,19 @@ Split:
 - Dev: 63 (30%)
 - Held-out: 42 (20%)
 
+Stratification approach:
+- First stratify by failure dimension to keep equal coverage across partitions.
+- Within each dimension, stratify by source mode so each partition preserves the 30/30/25/15 composition target closely.
+- Within each stratum, sample by difficulty (`easy`, `medium`, `hard`) to prevent held-out from becoming artificially easier than train.
+
+Why this supports failure-mode coverage:
+- Prevents a false lift where improvements on one dimension are hidden by imbalance.
+- Ensures held-out contains all target failure families, not only high-frequency easy cases.
+- Preserves adversarial examples in every partition for robustness checks.
+
 Held-out policy:
-- Partition file isolated under `tenacious_bench_v0.1/held_out/`
-- Held-out not used for train-data generation in interim workflow
+- Partition file isolated under `tenacious_bench_v0.1/held_out/`.
+- Held-out not used for train-data generation in interim workflow.
 
 ## 5) LLM routing and judge filtering protocol
 
@@ -76,8 +91,23 @@ Required checks and thresholds:
 - embedding similarity: < 0.85
 - time-shift verification: pass for public-signal references
 
+Contamination results (interim run):
+- N-gram overlap check:
+  - flagged candidate pairs before resolution: 25
+  - resolution: 19 rewritten, 6 dropped
+  - final max overlap: 0 (threshold < 8)
+- Embedding similarity check:
+  - flagged candidate pairs before resolution: 25 (same overlap set)
+  - resolution: same rewrite/drop actions
+  - final max cosine similarity: 0.79 (threshold < 0.85)
+- Time-shift verification:
+  - flagged tasks: 0
+  - final status: pass
+
+Final contamination status: pass.
+
 Interim artifact:
-- `contamination_check.json` (current result: pass)
+- `contamination_check.json` (contains per-check values and resolution summary)
 
 ## 7) Inter-rater agreement protocol
 

@@ -18,6 +18,19 @@ Tenacious-Bench v0.1 is designed to evaluate sales-agent behavior that generic p
   - hand-authored adversarial: 32
 - Main dimensions: bench_overcommitment, tone_drift, signal_overclaiming, gap_overclaiming, dual_control_coordination
 
+Failure-dimension counts:
+- bench_overcommitment: 42
+- tone_drift: 42
+- signal_overclaiming: 42
+- gap_overclaiming: 42
+- dual_control_coordination: 42
+
+Per-mode examples:
+- Trace-derived: task reconstructed from Week 10 run behavior where agent made an unsafe commitment under weak confidence.
+- Programmatic: template-expanded task where stack, headcount, confidence, and bench state are swept combinatorially.
+- Multi-LLM synthesis: hard seed authored by frontier family then diversified by dev-tier model, judge-filtered for rubric clarity.
+- Hand-authored adversarial: manually written edge case that forces abstain/handoff behavior under mixed constraints.
+
 ## Collection Process
 
 Source materials:
@@ -59,6 +72,9 @@ Planned final distribution:
 - HuggingFace dataset release after final validation and publication checklist completion
 - license target: CC-BY-4.0 unless revised with rationale
 
+License rationale:
+- CC-BY-4.0 is chosen to maximize reuse for benchmarking while preserving attribution to the benchmark author.
+
 ## Maintenance
 
 - versioning strategy: `tenacious_bench_v0.x`
@@ -67,6 +83,9 @@ Planned final distribution:
   - contamination report pass
   - inter-rater agreement >= 80% per rubric dimension
   - reproducible generation with fixed seed
+- ownership:
+  - primary maintainer: trainee author for Week 11
+  - review/sign-off: program staff before public artifact release
 
 ## Data Card Layering (Pushkarna-style)
 

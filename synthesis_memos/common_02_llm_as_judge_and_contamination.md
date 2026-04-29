@@ -8,11 +8,18 @@ Two points are critical and adopted:
 
 ## Point of disagreement
 
-I disagree with workflows that lean too heavily on a single robust judge model for both high-volume filtering and final adjudication. For this benchmark, that centralizes error and increases leakage risk when generation families overlap. A split judge protocol is safer.
+Specific design choice I disagree with: reusing one judge backbone for both high-volume filtering and final adjudication (judge architecture discussion in survey sections on system design and bias controls, Sections 5-6). For this benchmark, that centralizes error and increases leakage risk when generation families overlap. A split judge protocol is safer.
 
 ## Evidence from our context
 
-Tenacious tasks require subtle policy distinctions (e.g., phased ramp vs unsafe commitment) where judge drift can silently pass invalid outputs. A single-judge architecture could hide this until held-out evaluation.
+Tenacious tasks require subtle policy distinctions (e.g., phased ramp vs unsafe commitment) where judge drift can silently pass invalid outputs.
+
+Week 10 / interim evidence:
+- Probes `P-010`, `P-011`, `P-012` show tone and framing drift under pressure.
+- Probes `P-007`, `P-008`, `P-009` show operational commitment failures.
+- Trace anchors `tau_reproduction_check_03` and `tau_reproduction_check_04` show instability across similar task conditions.
+
+With these failure types, a single judge can produce consistent but wrong acceptance behavior that is hard to detect without model-family rotation.
 
 ## Week 11 design decisions driven by this memo
 

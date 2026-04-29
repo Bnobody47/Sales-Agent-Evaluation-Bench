@@ -5,6 +5,9 @@
 - `build_tenacious_bench.py` - deterministic generator for benchmark partitions and reports
 - `seed_counts.json` - generated counts by source mode and partition
 - `judge_filter_log.json` - routing and filtering metadata
+- `ROUTING_POLICY.md` - explicit model routing rationale
+- `prompts/judge_pointwise_prompt.md` - pointwise prompt
+- `prompts/judge_pairwise_prompt.md` - pairwise prompt
 
 ## Routing design (interim)
 
@@ -14,6 +17,15 @@
 - Eval-tier judge role: calibration spot checks only
 
 Policy: generator model family must differ from judge family for each task batch.
+
+Judge filter thresholds:
+- input coherence >= 3/5
+- ground-truth verifiability >= 3/5
+- rubric-application clarity >= 3/5
+
+Near-duplicate handling:
+- run pairwise comparison for candidate pairs
+- keep the candidate with stronger aggregate judge utility
 
 ## Dedup logic
 

@@ -6,16 +6,15 @@
     "held_out": 42
   },
   "by_source_mode": {
-    "trace_derived": 63,
-    "programmatic": 63,
-    "multi_llm_synthesis": 52,
-    "hand_authored_adversarial": 32
+    "programmatic": 69,
+    "trace_derived": 65,
+    "hand_authored_adversarial": 30,
+    "multi_llm_synthesis": 46
   },
   "by_dimension": {
-    "tone_drift": 42,
-    "bench_overcommitment": 42,
-    "dual_control_coordination": 42,
-    "signal_overclaiming": 42,
-    "gap_overclaiming": 42
+    "gap_overclaiming": 52,
+    "tone_drift": 53,
+    "signal_overclaiming": 53,
+    "dual_control_coordination": 52
   }
 }

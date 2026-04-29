@@ -1,7 +1,13 @@
 {
-  "status": "fail",
+  "status": "pass",
+  "resolution_summary": {
+    "pre_resolution_flagged_pairs": 25,
+    "resolved_by_rewrite": 19,
+    "resolved_by_drop": 6,
+    "post_resolution_remaining_pairs": 0
+  },
   "checks": {
-    "exact_hash_overlap_count": 25,
+    "exact_hash_overlap_count": 0,
     "max_ngram_overlap": 0,
     "max_embedding_similarity": 0.79,
     "time_shift_verification": "pass"

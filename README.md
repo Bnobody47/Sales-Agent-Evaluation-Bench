@@ -36,10 +36,18 @@ This repository contains the Week 11 interim submission artifacts (Acts I + II) 
 
 ## Reproducibility
 
+Environment requirements:
+- Python 3.11+
+- Standard library only for interim scripts (`json`, `hashlib`, `random`, `pathlib`, `re`)
+
+Install command:
+- `python -m pip install --upgrade pip`
+
 1. Generate dataset artifacts:
    - `python generation_scripts/build_tenacious_bench.py`
 2. Evaluate a partition quickly:
    - `python scoring_evaluator.py`
+   - `python scoring_evaluator.py examples/example_tasks.jsonl`
 3. Validate contamination summary:
    - inspect `contamination_check.json`
 
@@ -52,10 +60,21 @@ This repository contains the Week 11 interim submission artifacts (Acts I + II) 
 - `datasheet.md`: dataset documentation
 - `methodology.md`: design, routing, contamination, and path rationale
 - `generation_scripts/`: generation pipeline + judge logs
+- `examples/`: committed sample tasks for evaluator inspection
 - `inter_rater_agreement.md`: rubric agreement and revisions
 - `synthesis_memos/`: reading synthesis memos
 - `reports/bench_composition.json`: composition stats used in report
+- `reports/style_guide_v2_integration.md`: how the provided style-guide v2 PDF was integrated
 - `cost_log.md`: interim cost log
+
+## Key artifacts
+
+- Audit memo: `audit_memo.md`
+- Schema: `schema.json`
+- Evaluator: `scoring_evaluator.py`
+- Methodology rationale: `methodology.md`
+- Datasheet: `datasheet.md`
+- Synthesis memos: `synthesis_memos/common_01_synthetic_data_practices.md`, `synthesis_memos/common_02_llm_as_judge_and_contamination.md`
 
 ## What is next (Days 4-7)
 
