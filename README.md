@@ -65,6 +65,7 @@ Install command:
 - `synthesis_memos/`: reading synthesis memos
 - `reports/bench_composition.json`: composition stats used in report
 - `reports/style_guide_v2_integration.md`: how the provided style-guide v2 PDF was integrated
+- `reports/evaluator_examples.md`: how evaluator applies to 3 committed example tasks
 - `cost_log.md`: interim cost log
 
 ## Key artifacts
