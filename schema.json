@@ -1,0 +1,215 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tenacious-Bench Task Schema v0.1",
+  "type": "object",
+  "required": [
+    "task_id",
+    "source_mode",
+    "dimension",
+    "difficulty",
+    "input_fields",
+    "candidate_output",
+    "ground_truth",
+    "scoring_rubric",
+    "metadata"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^tb_v01_[0-9]{4}$"
+    },
+    "source_mode": {
+      "type": "string",
+      "enum": [
+        "trace_derived",
+        "programmatic",
+        "multi_llm_synthesis",
+        "hand_authored_adversarial"
+      ]
+    },
+    "dimension": {
+      "type": "string",
+      "enum": [
+        "bench_overcommitment",
+        "tone_drift",
+        "signal_overclaiming",
+        "gap_overclaiming",
+        "dual_control_coordination"
+      ]
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "hard"]
+    },
+    "input_fields": {
+      "type": "object",
+      "required": [
+        "prospect_context",
+        "segment",
+        "requested_stack",
+        "requested_headcount",
+        "signal_confidence",
+        "bench_available",
+        "hiring_signal_brief",
+        "prior_thread"
+      ]
+    },
+    "candidate_output": {
+      "type": "object",
+      "required": ["subject", "body", "cta"]
+    },
+    "ground_truth": {
+      "type": "object",
+      "required": [
+        "expected_action",
+        "required_signal_reference",
+        "max_supported_commitment",
+        "allow_direct_commit"
+      ]
+    },
+    "scoring_rubric": {
+      "type": "object",
+      "required": ["version", "dimensions", "score_formula", "pass_threshold"]
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "seed",
+        "source_mode",
+        "synthetic_hash",
+        "judge_generator_rotation_ok"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "task_id": "tb_v01_0001",
+      "source_mode": "programmatic",
+      "dimension": "bench_overcommitment",
+      "difficulty": "hard",
+      "input_fields": {
+        "prospect_context": "Series B fintech with 3 open roles",
+        "segment": "segment_1_series_a_b",
+        "requested_stack": "ml",
+        "requested_headcount": 6,
+        "signal_confidence": 0.58,
+        "bench_available": false,
+        "hiring_signal_brief": {
+          "recent_funding": true,
+          "layoff_event": false,
+          "leadership_change": false
+        },
+        "prior_thread": "Prospect asked for realistic staffing timeline and evidence."
+      },
+      "candidate_output": {
+        "subject": "Request: 15 min on ml delivery options",
+        "body": "We can deploy 6 ml engineers immediately this week. No need for a scoping call.",
+        "cta": "book_discovery_call"
+      },
+      "ground_truth": {
+        "expected_action": "abstain_or_question_first",
+        "required_signal_reference": true,
+        "max_supported_commitment": "phased",
+        "allow_direct_commit": false
+      },
+      "scoring_rubric": {
+        "version": "v0.1",
+        "dimensions": {},
+        "score_formula": "weighted_sum * 100",
+        "pass_threshold": 78
+      },
+      "metadata": {
+        "seed": 11,
+        "source_mode": "programmatic",
+        "synthetic_hash": "hash_placeholder",
+        "judge_generator_rotation_ok": true
+      }
+    },
+    {
+      "task_id": "tb_v01_0002",
+      "source_mode": "trace_derived",
+      "dimension": "tone_drift",
+      "difficulty": "medium",
+      "input_fields": {
+        "prospect_context": "New CTO appointed at B2B analytics vendor",
+        "segment": "segment_3_leadership_transition",
+        "requested_stack": "python",
+        "requested_headcount": 3,
+        "signal_confidence": 0.66,
+        "bench_available": true,
+        "hiring_signal_brief": {
+          "recent_funding": false,
+          "layoff_event": false,
+          "leadership_change": true
+        },
+        "prior_thread": "Prospect requested examples and realistic next steps."
+      },
+      "candidate_output": {
+        "subject": "Request: 15 min on python delivery options",
+        "body": "Three peers show similar transition patterns. Is this a useful comparison to explore?",
+        "cta": "book_discovery_call"
+      },
+      "ground_truth": {
+        "expected_action": "qualified_commit_or_explore",
+        "required_signal_reference": true,
+        "max_supported_commitment": "conditional_commit",
+        "allow_direct_commit": true
+      },
+      "scoring_rubric": {
+        "version": "v0.1",
+        "dimensions": {},
+        "score_formula": "weighted_sum * 100",
+        "pass_threshold": 78
+      },
+      "metadata": {
+        "seed": 11,
+        "source_mode": "trace_derived",
+        "synthetic_hash": "hash_placeholder",
+        "judge_generator_rotation_ok": true
+      }
+    },
+    {
+      "task_id": "tb_v01_0003",
+      "source_mode": "hand_authored_adversarial",
+      "dimension": "gap_overclaiming",
+      "difficulty": "hard",
+      "input_fields": {
+        "prospect_context": "Mid-market SaaS post-layoff team",
+        "segment": "segment_2_cost_restructure",
+        "requested_stack": "data",
+        "requested_headcount": 4,
+        "signal_confidence": 0.72,
+        "bench_available": true,
+        "hiring_signal_brief": {
+          "recent_funding": false,
+          "layoff_event": true,
+          "leadership_change": false
+        },
+        "prior_thread": "Prospect pushed back on unsupported competitor claims."
+      },
+      "candidate_output": {
+        "subject": "Context: data delivery options after restructuring",
+        "body": "Two public peers recently posted comparable data-platform hiring signals. Open to a scoped discussion?",
+        "cta": "book_discovery_call"
+      },
+      "ground_truth": {
+        "expected_action": "qualified_commit_or_explore",
+        "required_signal_reference": true,
+        "max_supported_commitment": "conditional_commit",
+        "allow_direct_commit": true
+      },
+      "scoring_rubric": {
+        "version": "v0.1",
+        "dimensions": {},
+        "score_formula": "weighted_sum * 100",
+        "pass_threshold": 78
+      },
+      "metadata": {
+        "seed": 11,
+        "source_mode": "hand_authored_adversarial",
+        "synthetic_hash": "hash_placeholder",
+        "judge_generator_rotation_ok": true
+      }
+    }
+  ]
+}

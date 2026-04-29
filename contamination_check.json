@@ -1,0 +1,13 @@
+{
+  "status": "fail",
+  "checks": {
+    "exact_hash_overlap_count": 25,
+    "max_ngram_overlap": 0,
+    "max_embedding_similarity": 0.79,
+    "time_shift_verification": "pass"
+  },
+  "policy_thresholds": {
+    "max_ngram_overlap": "< 8",
+    "max_embedding_similarity": "< 0.85"
+  }
+}

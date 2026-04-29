@@ -1,0 +1,21 @@
+{
+  "total_tasks": 210,
+  "by_partition": {
+    "train": 105,
+    "dev": 63,
+    "held_out": 42
+  },
+  "by_source_mode": {
+    "trace_derived": 63,
+    "programmatic": 63,
+    "multi_llm_synthesis": 52,
+    "hand_authored_adversarial": 32
+  },
+  "by_dimension": {
+    "tone_drift": 42,
+    "bench_overcommitment": 42,
+    "dual_control_coordination": 42,
+    "signal_overclaiming": 42,
+    "gap_overclaiming": 42
+  }
+}

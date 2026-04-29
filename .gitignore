@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Keep held-out isolated from future training pipelines.
+training_data/held_out_export/

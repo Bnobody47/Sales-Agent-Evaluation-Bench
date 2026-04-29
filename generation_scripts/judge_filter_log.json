@@ -1,0 +1,14 @@
+{
+  "seed": 11,
+  "total_tasks": 210,
+  "generator_models": {
+    "hard_seed_author": "frontier_model_class",
+    "bulk_variation": "dev_tier_model_class"
+  },
+  "judge_models": {
+    "bulk_filter": "dev_tier_judge",
+    "spot_check": "eval_tier_judge"
+  },
+  "rotation_policy": "generator_family != judge_family for each task",
+  "status": "completed"
+}

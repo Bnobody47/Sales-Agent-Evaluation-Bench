@@ -1,0 +1,14 @@
+{
+  "total": 210,
+  "source_mode_targets": {
+    "trace_derived": 63,
+    "programmatic": 63,
+    "multi_llm_synthesis": 52,
+    "hand_authored_adversarial": 32
+  },
+  "actual_partition_sizes": {
+    "train": 105,
+    "dev": 63,
+    "held_out": 42
+  }
+}
