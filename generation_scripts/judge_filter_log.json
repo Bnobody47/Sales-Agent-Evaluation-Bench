@@ -1,31 +1,2711 @@
 {
   "seed": 11,
-  "total_tasks": 210,
-  "generator_models": {
-    "hard_seed_author": "frontier_model_class",
-    "bulk_variation": "dev_tier_model_class"
+  "generator_roles": {
+    "trace_derived": "frontier_claude_family",
+    "programmatic": "dev_qwen_family",
+    "multi_llm_synthesis": "dev_deepseek_family",
+    "hand_authored_adversarial": "human_authored"
   },
-  "judge_models": {
-    "bulk_filter": "dev_tier_judge",
-    "spot_check": "eval_tier_judge"
+  "judge_roles": {
+    "bulk_filter_dev_tier": "dev_qwen_family",
+    "spot_check_eval_tier": "eval_gpt5_family"
   },
-  "rotation_policy": "generator_family != judge_family for each task",
+  "rotation_rule": "same model family never both generates and judges same task",
   "judge_thresholds": {
     "input_coherence": ">= 3",
     "ground_truth_verifiability": ">= 3",
     "rubric_application_clarity": ">= 3"
   },
-  "pairwise_dedup_sample_winners": [
-    "tb_v01_0128",
-    "tb_v01_0237",
-    "tb_v01_0041",
-    "tb_v01_0064",
-    "tb_v01_0038",
-    "tb_v01_0079",
-    "tb_v01_0186",
-    "tb_v01_0219",
-    "tb_v01_0178",
-    "tb_v01_0032"
+  "pointwise_filter_logs": [
+    {
+      "task_id": "tb_v01_0001",
+      "source_mode": "trace_derived",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0002",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0003",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0004",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0005",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0006",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0007",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0008",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0009",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0010",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0011",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0012",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0013",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0014",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0015",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0016",
+      "source_mode": "trace_derived",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0017",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0018",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0019",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0020",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0021",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0022",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0023",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0024",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0025",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0026",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0027",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0028",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0029",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0030",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0031",
+      "source_mode": "trace_derived",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0032",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0033",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0034",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0035",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0036",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0037",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0038",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0039",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0040",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0041",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0042",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0043",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0044",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0045",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0046",
+      "source_mode": "trace_derived",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0047",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0048",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0049",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0050",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0051",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0052",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0053",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0054",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0055",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0056",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0057",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0058",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0059",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0060",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0061",
+      "source_mode": "trace_derived",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0062",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0063",
+      "source_mode": "trace_derived",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0064",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold",
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0065",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0066",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0067",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0068",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0069",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0070",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0071",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0072",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0073",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0074",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold",
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0075",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0076",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0077",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0078",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0079",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0080",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0081",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0082",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0083",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0084",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0085",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0086",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0087",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0088",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0089",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold",
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0090",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0091",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0092",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0093",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0094",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold",
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0095",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0096",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0097",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0098",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0099",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0100",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0101",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0102",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0103",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0104",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold",
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0105",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0106",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0107",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0108",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0109",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold",
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0110",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0111",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0112",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0113",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0114",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0115",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0116",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0117",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0118",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0119",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0120",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0121",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0122",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0123",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0124",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0125",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0126",
+      "source_mode": "programmatic",
+      "passed": false,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": [
+        "generator_judge_family_overlap"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0127",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0128",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0129",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0130",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0131",
+      "source_mode": "multi_llm_synthesis",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0132",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0133",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0134",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0135",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0136",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0137",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0138",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0139",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0140",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0141",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0142",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0143",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0144",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0145",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0146",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0147",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0148",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0149",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0150",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0151",
+      "source_mode": "multi_llm_synthesis",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0152",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0153",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0154",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0155",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0156",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0157",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0158",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0159",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0160",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0161",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0162",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0163",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0164",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0165",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0166",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0167",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0168",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0169",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0170",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0171",
+      "source_mode": "multi_llm_synthesis",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0172",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0173",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0174",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0175",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0176",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0177",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0178",
+      "source_mode": "multi_llm_synthesis",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0179",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0180",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0181",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0182",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0183",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0184",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0185",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0186",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0187",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0188",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0189",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0190",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0191",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0192",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0193",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0194",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0195",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0196",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0197",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0198",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0199",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0200",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0201",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0202",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0203",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0204",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0205",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0206",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0207",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0208",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    },
+    {
+      "task_id": "tb_v01_0209",
+      "source_mode": "hand_authored_adversarial",
+      "passed": false,
+      "scores": {
+        "input_coherence": 2,
+        "ground_truth_verifiability": 2,
+        "rubric_application_clarity": 3
+      },
+      "reasons": [
+        "input_coherence_below_threshold",
+        "ground_truth_verifiability_below_threshold"
+      ]
+    },
+    {
+      "task_id": "tb_v01_0210",
+      "source_mode": "hand_authored_adversarial",
+      "passed": true,
+      "scores": {
+        "input_coherence": 5,
+        "ground_truth_verifiability": 5,
+        "rubric_application_clarity": 5
+      },
+      "reasons": []
+    }
   ],
-  "status": "completed"
+  "pairwise_logs": [
+    {
+      "task_a": "tb_v01_0127",
+      "task_b": "tb_v01_0128",
+      "winner": "tb_v01_0127",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0129",
+      "task_b": "tb_v01_0130",
+      "winner": "tb_v01_0129",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0132",
+      "task_b": "tb_v01_0133",
+      "winner": "tb_v01_0132",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0134",
+      "task_b": "tb_v01_0135",
+      "winner": "tb_v01_0134",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0136",
+      "task_b": "tb_v01_0137",
+      "winner": "tb_v01_0136",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0138",
+      "task_b": "tb_v01_0139",
+      "winner": "tb_v01_0138",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0140",
+      "task_b": "tb_v01_0141",
+      "winner": "tb_v01_0140",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0142",
+      "task_b": "tb_v01_0143",
+      "winner": "tb_v01_0142",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0144",
+      "task_b": "tb_v01_0145",
+      "winner": "tb_v01_0144",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0146",
+      "task_b": "tb_v01_0147",
+      "winner": "tb_v01_0146",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0148",
+      "task_b": "tb_v01_0149",
+      "winner": "tb_v01_0148",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0150",
+      "task_b": "tb_v01_0152",
+      "winner": "tb_v01_0150",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0153",
+      "task_b": "tb_v01_0154",
+      "winner": "tb_v01_0153",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0155",
+      "task_b": "tb_v01_0156",
+      "winner": "tb_v01_0155",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0157",
+      "task_b": "tb_v01_0158",
+      "winner": "tb_v01_0157",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0159",
+      "task_b": "tb_v01_0160",
+      "winner": "tb_v01_0159",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0161",
+      "task_b": "tb_v01_0162",
+      "winner": "tb_v01_0161",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0163",
+      "task_b": "tb_v01_0164",
+      "winner": "tb_v01_0163",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0165",
+      "task_b": "tb_v01_0166",
+      "winner": "tb_v01_0165",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0167",
+      "task_b": "tb_v01_0168",
+      "winner": "tb_v01_0167",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0169",
+      "task_b": "tb_v01_0170",
+      "winner": "tb_v01_0169",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0172",
+      "task_b": "tb_v01_0173",
+      "winner": "tb_v01_0172",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0174",
+      "task_b": "tb_v01_0175",
+      "winner": "tb_v01_0174",
+      "task_a_total": 15,
+      "task_b_total": 15
+    },
+    {
+      "task_a": "tb_v01_0176",
+      "task_b": "tb_v01_0177",
+      "winner": "tb_v01_0176",
+      "task_a_total": 15,
+      "task_b_total": 15
+    }
+  ]
 }

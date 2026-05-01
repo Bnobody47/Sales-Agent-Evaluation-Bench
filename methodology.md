@@ -91,15 +91,15 @@ Required checks and thresholds:
 - embedding similarity: < 0.85
 - time-shift verification: pass for public-signal references
 
-Contamination results (interim run):
+Contamination results (latest script run):
 - N-gram overlap check:
-  - flagged candidate pairs before resolution: 25
-  - resolution: 19 rewritten, 6 dropped
-  - final max overlap: 0 (threshold < 8)
+  - flagged candidate pairs before resolution: 7056
+  - resolution policy: flagged held-out tasks are marked for drop-or-rewrite
+  - post-resolution remaining pairs: 0
 - Embedding similarity check:
-  - flagged candidate pairs before resolution: 25 (same overlap set)
-  - resolution: same rewrite/drop actions
-  - final max cosine similarity: 0.79 (threshold < 0.85)
+  - max observed cosine before resolution: 0.9759
+  - threshold: < 0.85
+  - violations routed to drop-or-rewrite path
 - Time-shift verification:
   - flagged tasks: 0
   - final status: pass

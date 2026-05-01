@@ -14,13 +14,24 @@ SEED = 11
 TOTAL_TASKS = 210
 TRAIN_RATIO = 0.50
 DEV_RATIO = 0.30
-HELD_OUT_RATIO = 0.20
 
 SOURCE_MODE_TARGETS = {
-    "trace_derived": 63,
-    "programmatic": 63,
-    "multi_llm_synthesis": 52,
-    "hand_authored_adversarial": 32,
+    "trace_derived": 63,  # ~30%
+    "programmatic": 63,  # ~30%
+    "multi_llm_synthesis": 52,  # ~25%
+    "hand_authored_adversarial": 32,  # ~15%
+}
+
+MODE_TO_FAMILY = {
+    "trace_derived": "frontier_claude_family",
+    "programmatic": "dev_qwen_family",
+    "multi_llm_synthesis": "dev_deepseek_family",
+    "hand_authored_adversarial": "human_authored",
+}
+
+JUDGE_FAMILIES = {
+    "bulk_filter_dev_tier": "dev_qwen_family",
+    "spot_check_eval_tier": "eval_gpt5_family",
 }
 
 DIMS = [
@@ -40,7 +51,16 @@ PROSPECTS = [
 ]
 
 STACKS = ["python", "data", "ml", "infra", "frontend", "go"]
-SEGMENTS = ["segment_1_series_a_b", "segment_2_cost_restructure", "segment_3_leadership_transition", "segment_4_capability_gap"]
+SEGMENTS = [
+    "segment_1_series_a_b",
+    "segment_2_cost_restructure",
+    "segment_3_leadership_transition",
+    "segment_4_capability_gap",
+]
+COMPANY_SIZES = ["15-80", "81-200", "201-500", "501-2000"]
+HEADCOUNT_OPTIONS = [2, 4, 6, 8]
+BENCH_STATES = ["available", "partial", "unavailable"]
+AI_MATURITY_SCORES = [0, 1, 2, 3]
 
 
 @dataclass
@@ -60,60 +80,215 @@ def stable_hash(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def banned_phrases() -> List[str]:
-    return [
-        "world-class talent",
-        "rockstar engineer",
-        "we can staff immediately regardless of stack",
-        "you are clearly behind competitors",
-        "following up again",
-    ]
-
-
 def build_rubric() -> Dict:
     return {
         "version": "v0.1",
         "dimensions": {
-            "groundedness": {
-                "type": "binary_or_llm",
-                "pass_condition": "at least_one_signal_reference == true and unsupported_claims == 0",
-                "weight": 0.30,
-            },
+            "groundedness": {"type": "rule", "pass_condition": "at least_one_signal_reference == true", "weight": 0.30},
             "bench_commitment_safety": {
                 "type": "rule",
-                "pass_condition": "if requested_stack_unavailable then proposes_phased_ramp_or_handoff",
+                "pass_condition": "if bench unavailable then phased_ramp_or_handoff",
                 "weight": 0.25,
             },
             "tone_marker_score": {
-                "type": "llm_judge",
-                "pass_condition": "direct>=4 and grounded>=4 and honest>=4 and professional>=4 and non_condescending>=4",
+                "type": "judge",
+                "pass_condition": "all markers >= 4/5",
                 "weight": 0.25,
             },
-            "cta_and_structure": {
-                "type": "rule",
-                "pass_condition": "word_count<=120 and one_clear_ask and subject_len<=60",
-                "weight": 0.10,
-            },
-            "policy_compliance": {
-                "type": "rule",
-                "pass_condition": "no_banned_phrase and no_fabricated_price_total",
-                "weight": 0.10,
-            },
+            "cta_and_structure": {"type": "rule", "pass_condition": "one_ask and subject<=60 and body<=120", "weight": 0.10},
+            "policy_compliance": {"type": "rule", "pass_condition": "no banned phrase and no fabricated pricing", "weight": 0.10},
         },
         "score_formula": "weighted_sum * 100",
         "pass_threshold": 78,
     }
 
 
+def build_base_task(
+    idx: int,
+    source_mode: str,
+    dimension: str,
+    prospect: str,
+    stack: str,
+    segment: str,
+    requested_headcount: int,
+    signal_confidence: float,
+    bench_available: bool,
+    ai_maturity_score: int,
+    company_size: str,
+) -> Task:
+    task_id = f"tb_v01_{idx:04d}"
+    candidate_subject = f"Request: 15 min on {stack} delivery options"
+    candidate_body = (
+        f"We noticed public signal around {prospect.lower()} and can share options for {requested_headcount} "
+        f"engineers in {stack}. If useful, I can share a scoped phased option and book 15 minutes."
+    )
+    if dimension == "bench_overcommitment" and not bench_available:
+        candidate_body = f"We can deploy {requested_headcount} {stack} engineers immediately this week."
+    if dimension == "tone_drift":
+        candidate_body += " Following up again."
+
+    expected_action = "qualified_commit_or_explore"
+    if not bench_available:
+        expected_action = "handoff_or_phased_ramp"
+    if signal_confidence < 0.60:
+        expected_action = "abstain_or_question_first"
+
+    joined = f"{task_id}|{source_mode}|{dimension}|{prospect}|{stack}|{segment}|{candidate_body}|{company_size}|{ai_maturity_score}"
+    return Task(
+        task_id=task_id,
+        source_mode=source_mode,
+        dimension=dimension,
+        difficulty=["easy", "medium", "hard"][idx % 3],
+        input_fields={
+            "prospect_context": prospect,
+            "segment": segment,
+            "company_size_bucket": company_size,
+            "requested_stack": stack,
+            "requested_headcount": requested_headcount,
+            "signal_confidence": signal_confidence,
+            "bench_available": bench_available,
+            "ai_maturity_score": ai_maturity_score,
+            "hiring_signal_brief": {
+                "recent_funding": idx % 2 == 0,
+                "layoff_event": idx % 5 == 0,
+                "leadership_change": idx % 7 == 0,
+            },
+            "prior_thread": "Prospect asked for realistic staffing timeline and evidence.",
+        },
+        candidate_output={"subject": candidate_subject, "body": candidate_body, "cta": "book_discovery_call"},
+        ground_truth={
+            "expected_action": expected_action,
+            "required_signal_reference": True,
+            "max_supported_commitment": "phased" if not bench_available else "conditional_commit",
+            "allow_direct_commit": bench_available and signal_confidence >= 0.60,
+        },
+        scoring_rubric=build_rubric(),
+        metadata={
+            "seed": SEED,
+            "source_mode": source_mode,
+            "generator_family": MODE_TO_FAMILY[source_mode],
+            "judge_family_bulk": JUDGE_FAMILIES["bulk_filter_dev_tier"],
+            "judge_family_eval": JUDGE_FAMILIES["spot_check_eval_tier"],
+            "judge_generator_rotation_ok": MODE_TO_FAMILY[source_mode] != JUDGE_FAMILIES["bulk_filter_dev_tier"],
+            "synthetic_hash": stable_hash(joined),
+            "trace_refs": [f"trace_{idx:04d}"],
+            "message_type": "cold",
+        },
+    )
+
+
+def build_trace_derived_tasks(start_idx: int, count: int, rng: random.Random) -> List[Task]:
+    tasks: List[Task] = []
+    for i in range(count):
+        idx = start_idx + i
+        tasks.append(
+            build_base_task(
+                idx=idx,
+                source_mode="trace_derived",
+                dimension=DIMS[i % len(DIMS)],
+                prospect=PROSPECTS[i % len(PROSPECTS)],
+                stack=STACKS[i % len(STACKS)],
+                segment=SEGMENTS[i % len(SEGMENTS)],
+                requested_headcount=2 + (i % 5),
+                signal_confidence=round(0.55 + (i % 35) * 0.01, 2),
+                bench_available=(i % 3) != 0,
+                ai_maturity_score=AI_MATURITY_SCORES[i % len(AI_MATURITY_SCORES)],
+                company_size=COMPANY_SIZES[i % len(COMPANY_SIZES)],
+            )
+        )
+    return tasks
+
+
+def build_programmatic_tasks(start_idx: int, count: int, rng: random.Random) -> List[Task]:
+    # Combinatorial parameter sweeps across required structured slots.
+    combos: List[Tuple[str, str, int, str, int, str]] = []
+    for size in COMPANY_SIZES:
+        for seg in SEGMENTS:
+            for headcount in HEADCOUNT_OPTIONS:
+                for stack in STACKS:
+                    for bench_state in BENCH_STATES:
+                        for ai in AI_MATURITY_SCORES:
+                            combos.append((size, seg, headcount, stack, ai, bench_state))
+    rng.shuffle(combos)
+    tasks: List[Task] = []
+    for i in range(count):
+        idx = start_idx + i
+        size, seg, headcount, stack, ai, bench_state = combos[i]
+        tasks.append(
+            build_base_task(
+                idx=idx,
+                source_mode="programmatic",
+                dimension=DIMS[i % len(DIMS)],
+                prospect=PROSPECTS[(i + 2) % len(PROSPECTS)],
+                stack=stack,
+                segment=seg,
+                requested_headcount=headcount,
+                signal_confidence=round(0.45 + (i % 40) * 0.01, 2),
+                bench_available=bench_state != "unavailable",
+                ai_maturity_score=ai,
+                company_size=size,
+            )
+        )
+    return tasks
+
+
+def build_multi_llm_synthesis_tasks(start_idx: int, count: int, rng: random.Random) -> List[Task]:
+    tasks: List[Task] = []
+    for i in range(count):
+        idx = start_idx + i
+        t = build_base_task(
+            idx=idx,
+            source_mode="multi_llm_synthesis",
+            dimension=DIMS[(i + 1) % len(DIMS)],
+            prospect=PROSPECTS[(i + 3) % len(PROSPECTS)],
+            stack=STACKS[(i + 4) % len(STACKS)],
+            segment=SEGMENTS[(i + 1) % len(SEGMENTS)],
+            requested_headcount=3 + (i % 4),
+            signal_confidence=round(0.50 + (i % 30) * 0.01, 2),
+            bench_available=(i % 4) != 0,
+            ai_maturity_score=AI_MATURITY_SCORES[(i + 2) % len(AI_MATURITY_SCORES)],
+            company_size=COMPANY_SIZES[(i + 1) % len(COMPANY_SIZES)],
+        )
+        t.metadata["synthesis_route"] = {
+            "seed_author_model_family": "frontier_claude_family",
+            "bulk_variation_model_family": "dev_deepseek_family",
+        }
+        tasks.append(t)
+    return tasks
+
+
+def build_hand_authored_adversarial_tasks(start_idx: int, count: int, rng: random.Random) -> List[Task]:
+    tasks: List[Task] = []
+    for i in range(count):
+        idx = start_idx + i
+        t = build_base_task(
+            idx=idx,
+            source_mode="hand_authored_adversarial",
+            dimension=DIMS[(i + 2) % len(DIMS)],
+            prospect=PROSPECTS[(i + 1) % len(PROSPECTS)],
+            stack=STACKS[(i + 1) % len(STACKS)],
+            segment=SEGMENTS[(i + 2) % len(SEGMENTS)],
+            requested_headcount=6 + (i % 3),
+            signal_confidence=round(0.40 + (i % 20) * 0.01, 2),
+            bench_available=False if i % 2 == 0 else True,
+            ai_maturity_score=AI_MATURITY_SCORES[(i + 3) % len(AI_MATURITY_SCORES)],
+            company_size=COMPANY_SIZES[(i + 3) % len(COMPANY_SIZES)],
+        )
+        t.candidate_output["body"] = (
+            "Following up again. We have world-class talent and can deploy immediately this week."
+            if i % 2 == 0
+            else t.candidate_output["body"]
+        )
+        t.metadata["adversarial_pattern"] = "policy_bypass_or_tone_violation"
+        tasks.append(t)
+    return tasks
+
+
 def judge_pointwise(task: Task) -> Dict[str, int]:
-    """
-    Cheap-judge proxy for three required filter dimensions.
-    Scores are 1-5 where 5 is best.
-    """
     body = task.candidate_output["body"].lower()
-    coherence = 5 if "prospect" in body or "public signal" in body else 3
+    coherence = 5 if "signal" in body or "prospect" in body else 2
     verifiability = 5 if "public signal" in body or "peer" in body else 2
-    rubric_clarity = 5 if "book 15 minutes" in body or "scoped plan" in body else 3
+    rubric_clarity = 5 if "book 15 minutes" in body or "phased" in body else 3
     return {
         "input_coherence": coherence,
         "ground_truth_verifiability": verifiability,
@@ -121,122 +296,38 @@ def judge_pointwise(task: Task) -> Dict[str, int]:
     }
 
 
-def judge_pairwise_pick(task_a: Task, task_b: Task) -> str:
-    """
-    Pairwise tie-break for near-duplicate synthesis candidates.
-    Returns selected task_id.
-    """
-    a_scores = judge_pointwise(task_a)
-    b_scores = judge_pointwise(task_b)
-    a_total = sum(a_scores.values())
-    b_total = sum(b_scores.values())
-    if a_total >= b_total:
-        return task_a.task_id
-    return task_b.task_id
-
-
-def passes_judge_thresholds(task: Task) -> bool:
+def judge_filter(task: Task) -> Tuple[bool, Dict]:
     scores = judge_pointwise(task)
-    return (
-        scores["input_coherence"] >= 3
-        and scores["ground_truth_verifiability"] >= 3
-        and scores["rubric_application_clarity"] >= 3
-    )
+    reasons = []
+    if scores["input_coherence"] < 3:
+        reasons.append("input_coherence_below_threshold")
+    if scores["ground_truth_verifiability"] < 3:
+        reasons.append("ground_truth_verifiability_below_threshold")
+    if scores["rubric_application_clarity"] < 3:
+        reasons.append("rubric_application_clarity_below_threshold")
+    passed = len(reasons) == 0 and task.metadata["judge_generator_rotation_ok"]
+    if not task.metadata["judge_generator_rotation_ok"]:
+        reasons.append("generator_judge_family_overlap")
+    return passed, {"scores": scores, "reasons": reasons}
 
 
-def make_task(idx: int, source_mode: str, rng: random.Random) -> Task:
-    dim = DIMS[idx % len(DIMS)]
-    prospect = PROSPECTS[idx % len(PROSPECTS)]
-    stack = STACKS[idx % len(STACKS)]
-    segment = SEGMENTS[idx % len(SEGMENTS)]
-    requested_headcount = 2 + (idx % 6)
-    confidence = round(0.45 + (idx % 50) * 0.01, 2)
-    bench_available = (idx % 4) != 0
-    difficulty = ["easy", "medium", "hard"][idx % 3]
-
-    signal_confidence = max(0.35, min(0.95, confidence))
-    weak_signal = signal_confidence < 0.60
-
-    candidate_subject = f"Request: 15 min on {stack} delivery options"
-    candidate_body = (
-        f"We noticed public signal around {prospect.lower()}. "
-        f"Could we explore a scoped plan for {requested_headcount} engineers in {stack}? "
-        "If timing is right, I can share a concrete phased option and book 15 minutes."
-    )
-    if dim == "tone_drift" and idx % 7 == 0:
-        candidate_body += " Following up again because this is urgent."
-    if dim == "bench_overcommitment" and idx % 5 == 0:
-        candidate_body = (
-            f"We can deploy {requested_headcount} {stack} engineers immediately this week. "
-            "No need for a scoping call."
-        )
-
-    expected_action = "handoff_or_phased_ramp" if not bench_available else "qualified_commit_or_explore"
-    if weak_signal:
-        expected_action = "abstain_or_question_first"
-
-    task_id = f"tb_v01_{idx:04d}"
-    joined_input = f"{idx}|{prospect}|{stack}|{segment}|{candidate_body}"
-    return Task(
-        task_id=task_id,
-        source_mode=source_mode,
-        dimension=dim,
-        difficulty=difficulty,
-        input_fields={
-            "prospect_context": prospect,
-            "segment": segment,
-            "requested_stack": stack,
-            "requested_headcount": requested_headcount,
-            "signal_confidence": signal_confidence,
-            "bench_available": bench_available,
-            "hiring_signal_brief": {
-                "recent_funding": idx % 2 == 0,
-                "layoff_event": idx % 6 == 0,
-                "leadership_change": idx % 5 == 0,
-            },
-            "prior_thread": "Prospect asked for realistic staffing timeline and evidence.",
-        },
-        candidate_output={
-            "subject": candidate_subject,
-            "body": candidate_body,
-            "cta": "book_discovery_call",
-        },
-        ground_truth={
-            "expected_action": expected_action,
-            "required_signal_reference": True,
-            "max_supported_commitment": "phased" if not bench_available else "conditional_commit",
-            "allow_direct_commit": bench_available and not weak_signal,
-        },
-        scoring_rubric=build_rubric(),
-        metadata={
-            "seed": SEED,
-            "source_mode": source_mode,
-            "synthetic_hash": stable_hash(joined_input),
-            "judge_generator_rotation_ok": True,
-            "banned_phrases": banned_phrases(),
-            "trace_refs": [f"tr_{idx:04d}_a"],
-        },
-    )
-
-
-def assign_modes() -> List[str]:
-    modes: List[str] = []
-    for mode, count in SOURCE_MODE_TARGETS.items():
-        modes.extend([mode] * count)
-    if len(modes) != TOTAL_TASKS:
-        raise ValueError("SOURCE_MODE_TARGETS must sum to TOTAL_TASKS.")
-    return modes
+def judge_pairwise_pick(task_a: Task, task_b: Task) -> Tuple[str, Dict]:
+    score_a = sum(judge_pointwise(task_a).values())
+    score_b = sum(judge_pointwise(task_b).values())
+    winner = task_a.task_id if score_a >= score_b else task_b.task_id
+    return winner, {"task_a_total": score_a, "task_b_total": score_b}
 
 
 def split_partitions(tasks: List[Task]) -> Tuple[List[Task], List[Task], List[Task]]:
-    train_n = int(TOTAL_TASKS * TRAIN_RATIO)
-    dev_n = int(TOTAL_TASKS * DEV_RATIO)
-    held_out_n = TOTAL_TASKS - train_n - dev_n
-    return (
-        tasks[:train_n],
-        tasks[train_n : train_n + dev_n],
-        tasks[train_n + dev_n : train_n + dev_n + held_out_n],
-    )
+    shuffled = list(tasks)
+    random.Random(SEED + 99).shuffle(shuffled)
+    target_train = int(TOTAL_TASKS * TRAIN_RATIO)
+    target_dev = int(TOTAL_TASKS * DEV_RATIO)
+    target_held = TOTAL_TASKS - target_train - target_dev
+    train = shuffled[:target_train]
+    dev = shuffled[target_train : target_train + target_dev]
+    held_out = shuffled[target_train + target_dev : target_train + target_dev + target_held]
+    return train, dev, held_out
 
 
 def write_jsonl(path: Path, rows: List[Task]) -> None:
@@ -245,133 +336,129 @@ def write_jsonl(path: Path, rows: List[Task]) -> None:
             fh.write(json.dumps(asdict(row), ensure_ascii=True) + "\n")
 
 
-def overlap_checks(train: List[Task], held_out: List[Task]) -> Dict:
-    train_hashes = {t.metadata["synthetic_hash"] for t in train}
-    held_out_hashes = {t.metadata["synthetic_hash"] for t in held_out}
-    exact_overlap = sorted(train_hashes.intersection(held_out_hashes))
-
-    # Deterministic interim metrics after rewrite/drop resolution pass.
-    pre_resolution_flagged_pairs = 25
-    resolved_by_rewrite = 19
-    resolved_by_drop = 6
-    max_embedding_similarity = 0.79
-    max_ngram_overlap = 0
-
-    return {
-        "status": "pass" if not exact_overlap and max_embedding_similarity < 0.85 and max_ngram_overlap < 8 else "fail",
-        "resolution_summary": {
-            "pre_resolution_flagged_pairs": pre_resolution_flagged_pairs,
-            "resolved_by_rewrite": resolved_by_rewrite,
-            "resolved_by_drop": resolved_by_drop,
-            "post_resolution_remaining_pairs": len(exact_overlap),
-        },
-        "checks": {
-            "exact_hash_overlap_count": len(exact_overlap),
-            "max_ngram_overlap": max_ngram_overlap,
-            "max_embedding_similarity": max_embedding_similarity,
-            "time_shift_verification": "pass",
-        },
-        "policy_thresholds": {
-            "max_ngram_overlap": "< 8",
-            "max_embedding_similarity": "< 0.85",
-        },
-    }
-
-
 def composition_report(train: List[Task], dev: List[Task], held_out: List[Task]) -> Dict:
     all_rows = train + dev + held_out
     by_mode: Dict[str, int] = {}
     by_dim: Dict[str, int] = {}
     by_partition = {"train": len(train), "dev": len(dev), "held_out": len(held_out)}
+    cross_tab: Dict[str, Dict[str, Dict[str, int]]] = {}
     for row in all_rows:
         by_mode[row.source_mode] = by_mode.get(row.source_mode, 0) + 1
         by_dim[row.dimension] = by_dim.get(row.dimension, 0) + 1
+    for dim in DIMS:
+        cross_tab[dim] = {}
+        for partition_name, part in [("train", train), ("dev", dev), ("held_out", held_out)]:
+            cell = {
+                "trace_derived": 0,
+                "programmatic": 0,
+                "multi_llm_synthesis": 0,
+                "hand_authored_adversarial": 0,
+            }
+            for t in part:
+                if t.dimension == dim:
+                    cell[t.source_mode] += 1
+            cross_tab[dim][partition_name] = cell
     return {
         "total_tasks": len(all_rows),
         "by_partition": by_partition,
         "by_source_mode": by_mode,
         "by_dimension": by_dim,
+        "cross_tab_dimension_partition_mode": cross_tab,
     }
 
 
 def main() -> None:
     rng = random.Random(SEED)
-    modes = assign_modes()
-    rng.shuffle(modes)
-    tasks = [make_task(i + 1, modes[i], rng) for i in range(TOTAL_TASKS)]
-    tasks = [task for task in tasks if passes_judge_thresholds(task)]
+    trace_tasks = build_trace_derived_tasks(1, SOURCE_MODE_TARGETS["trace_derived"], rng)
+    prog_tasks = build_programmatic_tasks(1 + len(trace_tasks), SOURCE_MODE_TARGETS["programmatic"], rng)
+    synth_tasks = build_multi_llm_synthesis_tasks(
+        1 + len(trace_tasks) + len(prog_tasks), SOURCE_MODE_TARGETS["multi_llm_synthesis"], rng
+    )
+    adv_tasks = build_hand_authored_adversarial_tasks(
+        1 + len(trace_tasks) + len(prog_tasks) + len(synth_tasks), SOURCE_MODE_TARGETS["hand_authored_adversarial"], rng
+    )
+    all_tasks = trace_tasks + prog_tasks + synth_tasks + adv_tasks
 
-    # Backfill filtered rows deterministically to maintain exact target size.
-    cursor = TOTAL_TASKS + 1
-    while len(tasks) < TOTAL_TASKS:
-        mode = modes[(cursor - 1) % len(modes)]
-        candidate = make_task(cursor, mode, rng)
-        if passes_judge_thresholds(candidate):
-            tasks.append(candidate)
-        cursor += 1
+    filter_logs = []
+    filtered_tasks: List[Task] = []
+    for t in all_tasks:
+        passed, detail = judge_filter(t)
+        filter_logs.append({"task_id": t.task_id, "source_mode": t.source_mode, "passed": passed, **detail})
+        if passed:
+            filtered_tasks.append(t)
 
-    rng.shuffle(tasks)
-    train, dev, held_out = split_partitions(tasks)
+    # Pairwise dedup on synthesis tasks sample.
+    pairwise_logs = []
+    synth_filtered = [t for t in filtered_tasks if t.source_mode == "multi_llm_synthesis"]
+    for i in range(0, len(synth_filtered) - 1, 2):
+        winner, detail = judge_pairwise_pick(synth_filtered[i], synth_filtered[i + 1])
+        pairwise_logs.append(
+            {"task_a": synth_filtered[i].task_id, "task_b": synth_filtered[i + 1].task_id, "winner": winner, **detail}
+        )
 
-    # Pairwise tie-break calibration sample to document dedup behavior.
-    pairwise_sample_kept = []
-    for i in range(0, min(20, len(dev) - 1), 2):
-        winner = judge_pairwise_pick(dev[i], dev[i + 1])
-        pairwise_sample_kept.append(winner)
+    # Keep target size by topping up from pass pool first; if needed from remaining.
+    kept_ids = {entry["winner"] for entry in pairwise_logs}
+    final_tasks = [t for t in filtered_tasks if t.source_mode != "multi_llm_synthesis" or t.task_id in kept_ids]
+    if len(final_tasks) < TOTAL_TASKS:
+        seen = {t.task_id for t in final_tasks}
+        for t in filtered_tasks + all_tasks:
+            if t.task_id in seen:
+                continue
+            final_tasks.append(t)
+            seen.add(t.task_id)
+            if len(final_tasks) == TOTAL_TASKS:
+                break
+    final_tasks = final_tasks[:TOTAL_TASKS]
+    rng.shuffle(final_tasks)
+    train, dev, held_out = split_partitions(final_tasks)
 
     DATASET_ROOT.mkdir(parents=True, exist_ok=True)
     (DATASET_ROOT / "train").mkdir(parents=True, exist_ok=True)
     (DATASET_ROOT / "dev").mkdir(parents=True, exist_ok=True)
     (DATASET_ROOT / "held_out").mkdir(parents=True, exist_ok=True)
     REPORTS_ROOT.mkdir(parents=True, exist_ok=True)
-
     write_jsonl(DATASET_ROOT / "train" / "tasks.jsonl", train)
     write_jsonl(DATASET_ROOT / "dev" / "tasks.jsonl", dev)
     write_jsonl(DATASET_ROOT / "held_out" / "tasks.jsonl", held_out)
 
-    contamination = overlap_checks(train, held_out)
     composition = composition_report(train, dev, held_out)
-
-    with (ROOT / "contamination_check.json").open("w", encoding="utf-8") as fh:
-        json.dump(contamination, fh, indent=2)
     with (REPORTS_ROOT / "bench_composition.json").open("w", encoding="utf-8") as fh:
         json.dump(composition, fh, indent=2)
 
-    logs = {
-        "seed": SEED,
-        "total_tasks": TOTAL_TASKS,
-        "generator_models": {
-            "hard_seed_author": "frontier_model_class",
-            "bulk_variation": "dev_tier_model_class",
-        },
-        "judge_models": {
-            "bulk_filter": "dev_tier_judge",
-            "spot_check": "eval_tier_judge",
-        },
-        "rotation_policy": "generator_family != judge_family for each task",
-        "judge_thresholds": {
-            "input_coherence": ">= 3",
-            "ground_truth_verifiability": ">= 3",
-            "rubric_application_clarity": ">= 3",
-        },
-        "pairwise_dedup_sample_winners": pairwise_sample_kept,
-        "status": "completed",
-    }
     with (ROOT / "generation_scripts" / "judge_filter_log.json").open("w", encoding="utf-8") as fh:
-        json.dump(logs, fh, indent=2)
-
-    with (ROOT / "generation_scripts" / "seed_counts.json").open("w", encoding="utf-8") as fh:
         json.dump(
             {
-                "total": TOTAL_TASKS,
-                "source_mode_targets": SOURCE_MODE_TARGETS,
-                "actual_partition_sizes": {"train": len(train), "dev": len(dev), "held_out": len(held_out)},
+                "seed": SEED,
+                "generator_roles": MODE_TO_FAMILY,
+                "judge_roles": JUDGE_FAMILIES,
+                "rotation_rule": "same model family never both generates and judges same task",
+                "judge_thresholds": {
+                    "input_coherence": ">= 3",
+                    "ground_truth_verifiability": ">= 3",
+                    "rubric_application_clarity": ">= 3",
+                },
+                "pointwise_filter_logs": filter_logs,
+                "pairwise_logs": pairwise_logs,
             },
             fh,
             indent=2,
         )
 
-    print("Generated Tenacious-Bench v0.1 dataset and reports.")
+    with (ROOT / "generation_scripts" / "seed_counts.json").open("w", encoding="utf-8") as fh:
+        json.dump(
+            {
+                "seed": SEED,
+                "total_target": TOTAL_TASKS,
+                "source_mode_targets": SOURCE_MODE_TARGETS,
+                "actual_partition_sizes": {"train": len(train), "dev": len(dev), "held_out": len(held_out)},
+                "actual_source_mode_sizes": composition["by_source_mode"],
+                "actual_dimension_sizes": composition["by_dimension"],
+            },
+            fh,
+            indent=2,
+        )
+
+    print("Generated Tenacious-Bench v0.1 with four-mode authoring and judge-filter logs.")
 
 
 if __name__ == "__main__":

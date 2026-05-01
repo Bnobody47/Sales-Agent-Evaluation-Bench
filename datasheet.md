@@ -64,6 +64,28 @@ Out-of-scope uses:
 - direct production truth labels for all industries
 - legal/compliance decision automation without human review
 
+## Limitations and Biases
+
+1. **Synthetic-construction bias**
+- A large portion of tasks are synthetic or synthetic-augmented. Even with trace-derived seeds, task phrasing may over-represent benchmark-style prompt structures and under-represent true inbox variance.
+
+2. **Public-signal lossiness**
+- Ground truth is constrained to publicly observable hiring and company signals. Some high-value internal context (board pressure, private staffing realities, confidential roadmap shifts) is unavailable and therefore ungraded.
+
+3. **Judge-policy bias**
+- The benchmark intentionally encodes Tenacious style policy (e.g., banned phrases, non-condescending framing). This improves domain alignment but may penalize stylistic variants that are acceptable outside this workflow.
+
+4. **Model-family filtering bias**
+- Judge filtering and anti-leakage rotation reduce contamination risk but can also produce selective retention of examples that score well under current filter logic.
+
+5. **Temporal drift risk**
+- Market language and hiring patterns shift over time; tasks tied to a prior signal window can age, reducing diagnostic value if not refreshed.
+
+Mitigations used:
+- contamination checks across held-out vs train/dev,
+- inter-rater protocol with rubric revision notes,
+- explicit versioning and maintenance plan for periodic refresh.
+
 ## Distribution
 
 Current status: interim local dataset in repository.

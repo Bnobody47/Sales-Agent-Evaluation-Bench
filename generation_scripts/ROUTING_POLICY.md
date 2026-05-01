@@ -7,12 +7,15 @@ This policy documents model-family routing and leakage-prevention rules used dur
 ## Generation assignments
 
 - **Frontier family (Claude/GPT-class)**: hard seed authoring for difficult or adversarial tasks tied to Week 10 failure categories.
+  - Config key in code: `frontier_claude_family`
 - **Dev-tier family (Qwen/DeepSeek-class)**: high-volume variation generation from templates and seeded prompts.
+  - Config keys in code: `dev_qwen_family`, `dev_deepseek_family`
 
 ## Judge assignments
 
 - **Dev-tier judge**: bulk pointwise filtering during authoring.
 - **Eval-tier judge**: calibration-only spot checks on sampled tasks.
+  - Config keys in code: `bulk_filter_dev_tier`, `spot_check_eval_tier`
 
 ## Non-negotiable leakage rule
 
@@ -36,3 +39,6 @@ When two synthesis paths produce near-duplicate tasks, both are pointwise scored
 ## Why this routing
 
 This split keeps generation cost low, preserves high-signal hard-case authoring quality, and reduces preference leakage risk in judge-filtering.
+
+Literature grounding:
+- Li et al. (2025), *Preference Leakage: A Contamination Problem in LLM-as-a-Judge*.

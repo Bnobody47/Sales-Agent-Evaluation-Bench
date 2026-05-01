@@ -1,5 +1,6 @@
 {
-  "total": 210,
+  "seed": 11,
+  "total_target": 210,
   "source_mode_targets": {
     "trace_derived": 63,
     "programmatic": 63,
@@ -10,5 +11,18 @@
     "train": 105,
     "dev": 63,
     "held_out": 42
+  },
+  "actual_source_mode_sizes": {
+    "multi_llm_synthesis": 52,
+    "programmatic": 63,
+    "trace_derived": 63,
+    "hand_authored_adversarial": 32
+  },
+  "actual_dimension_sizes": {
+    "signal_overclaiming": 44,
+    "bench_overcommitment": 42,
+    "tone_drift": 43,
+    "dual_control_coordination": 40,
+    "gap_overclaiming": 41
   }
 }

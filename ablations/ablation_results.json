@@ -1,0 +1,55 @@
+{
+  "delta_a_trained_vs_baseline": {
+    "observed_delta": 2.9761904761904763,
+    "ci95": [
+      0.5952380952380952,
+      5.357142857142857
+    ],
+    "p_value": 0.008
+  },
+  "delta_b_trained_vs_prompt_only": {
+    "observed_delta": 2.9761904761904763,
+    "ci95": [
+      0.5952380952380952,
+      5.357142857142857
+    ],
+    "p_value": 0.008
+  },
+  "delta_c_info_vs_tau2_reference": {
+    "note": "informational only; compares to stored tau2 reference scores and does not re-run tau2 benchmark",
+    "comparison": {
+      "observed_delta": 4.8559523809523775,
+      "ci95": [
+        2.475238095238091,
+        7.237142857142854
+      ],
+      "p_value": 0.0
+    }
+  },
+  "cost_pareto": {
+    "trained": {
+      "n": 42,
+      "mean_score": 93.80952380952381,
+      "pass_rate": 0.8809523809523809,
+      "mean_latency_seconds": 0.0,
+      "mean_cost_usd": 5.2266666666666665e-05,
+      "mean_tokens": 65.33333333333333
+    },
+    "baseline": {
+      "n": 42,
+      "mean_score": 90.83333333333333,
+      "pass_rate": 0.8809523809523809,
+      "mean_latency_seconds": 0.0,
+      "mean_cost_usd": 5.2266666666666665e-05,
+      "mean_tokens": 65.33333333333333
+    },
+    "prompt_only": {
+      "n": 42,
+      "mean_score": 90.83333333333333,
+      "pass_rate": 0.8809523809523809,
+      "mean_latency_seconds": 0.0,
+      "mean_cost_usd": 6.0723809523809526e-05,
+      "mean_tokens": 75.9047619047619
+    }
+  }
+}
