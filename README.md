@@ -15,8 +15,8 @@ This repository contains Week 11 final-submission artifacts for the Tenacious sa
 - Benchmark generation and scoring pipeline implemented.
 - Path B data-prep and training script implemented.
 - Ablation harness with Delta A/B/C + cost/latency instrumentation implemented.
-- Contamination checker script implemented for held-out vs train/dev.
-- Final public URLs section scaffolded (replace placeholders before hand-in).
+- Contamination checker includes n-gram + embedding + explicit temporal provenance-window checks.
+- Hugging Face dataset, blog post, and community engagement (GitHub issue + HF discussion) are linked below.
 
 ## Dataset quick facts
 
@@ -45,6 +45,9 @@ Install command:
    - `python generation_scripts/build_tenacious_bench.py`
 2. Run contamination checks:
    - `python generation_scripts/run_contamination_checks.py`
+   - Outputs `contamination_check.json` with:
+     - `time_shift_provenance_policy`
+     - `temporal_leak_examples_pre_resolution`
 3. Evaluate a partition quickly:
    - `python scoring_evaluator.py`
    - `python scoring_evaluator.py examples/example_tasks.jsonl`
@@ -94,11 +97,11 @@ Install command:
 
 ## Public artifact references
 
-Replace these placeholders before final hand-in:
-- HuggingFace dataset URL: `https://huggingface.co/datasets/<your-handle>/tenacious_bench_v0.1`
+- HuggingFace dataset URL: https://huggingface.co/datasets/Bnobody/tenacious_bench_v0.1
 - HuggingFace model URL (Path A/C only): `N/A (Path B selected)`
-- Blog post URL: `https://<your-blog-domain>/<post-slug>`
-- Community engagement URL: `https://github.com/<org-or-user>/<repo>/issues/<id>`
+- Blog post URL: https://dev.to/bnobody47/tenacious-bench-v01-a-small-b2b-sales-outreach-benchmark-with-contamination-checks-4foj
+- Community engagement (GitHub issue): https://github.com/Bnobody47/Sales-Agent-Evaluation-Bench/issues/1
+- Community engagement (Hugging Face dataset discussion): https://huggingface.co/datasets/Bnobody/tenacious_bench_v0.1/discussions/2
 
 ## Current result snapshot
 

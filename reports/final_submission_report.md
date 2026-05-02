@@ -79,8 +79,9 @@ Source: `ablations/ablation_results.json`
 4. `python training/train_path_b_orpo.py --max_steps 200`
 5. `python ablations/run_ablations.py`
 
-## Publication placeholders (replace before final hand-in)
+## Publication links
 
-- HF dataset URL: `https://huggingface.co/datasets/<your-handle>/tenacious_bench_v0.1`
-- Blog URL: `https://<your-blog-domain>/<post-slug>`
-- Community URL: `https://github.com/<org-or-user>/<repo>/issues/<id>`
+- HF dataset URL: https://huggingface.co/datasets/Bnobody/tenacious_bench_v0.1
+- Blog URL: https://dev.to/bnobody47/tenacious-bench-v01-a-small-b2b-sales-outreach-benchmark-with-contamination-checks-4foj
+- Community URL (GitHub issue): https://github.com/Bnobody47/Sales-Agent-Evaluation-Bench/issues/1
+- Community URL (HF dataset discussion): https://huggingface.co/datasets/Bnobody/tenacious_bench_v0.1/discussions/2

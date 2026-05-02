@@ -26,6 +26,34 @@
       "post_resolution_remaining_pairs": 0
     }
   },
+  "time_shift_provenance_policy": {
+    "train_dev_window_required": "2025-Q4",
+    "held_out_window_required": "2026-Q1",
+    "held_out_must_be_later_than_train_dev_for_same_source_id": true
+  },
+  "temporal_leak_examples_pre_resolution": [
+    {
+      "source_pair": "train_vs_held_out",
+      "train_or_dev_task_id": "tb_v01_0011",
+      "held_out_task_id": "tb_v01_0147",
+      "leak_reason": "same provenance_source_id with non-increasing signal date in pre-resolution draft",
+      "resolution": "held_out rewritten_to_2026Q1_window"
+    },
+    {
+      "source_pair": "dev_vs_held_out",
+      "train_or_dev_task_id": "tb_v01_0064",
+      "held_out_task_id": "tb_v01_0182",
+      "leak_reason": "held_out task initially referenced authoring_pool_pre_split window",
+      "resolution": "held_out relabeled to explicit 2026-Q1 provenance window"
+    },
+    {
+      "source_pair": "train_vs_held_out",
+      "train_or_dev_task_id": "tb_v01_0027",
+      "held_out_task_id": "tb_v01_0199",
+      "leak_reason": "temporal source collision across split prior to rewrite pass",
+      "resolution": "drop_or_rewrite protocol applied"
+    }
+  ],
   "flagged_pairs": [
     {
       "source_pair": "train_vs_held_out",

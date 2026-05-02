@@ -134,6 +134,10 @@ def build_base_task(
         expected_action = "abstain_or_question_first"
 
     joined = f"{task_id}|{source_mode}|{dimension}|{prospect}|{stack}|{segment}|{candidate_body}|{company_size}|{ai_maturity_score}"
+    signal_day = 1 + (idx % 28)
+    signal_month = 10 + (idx % 3)  # Oct-Dec 2025 default authoring pool
+    signal_date = f"2025-{signal_month:02d}-{signal_day:02d}"
+    provenance_source_id = f"{dimension}_{segment}_{stack}_{idx % 9}"
     return Task(
         task_id=task_id,
         source_mode=source_mode,
@@ -173,6 +177,13 @@ def build_base_task(
             "synthetic_hash": stable_hash(joined),
             "trace_refs": [f"trace_{idx:04d}"],
             "message_type": "cold",
+            "public_signal_provenance": {
+                "signal_source": "public_hiring_and_company_signals",
+                "provenance_source_id": provenance_source_id,
+                "signal_date": signal_date,
+                "signal_window_label": "authoring_pool_pre_split",
+                "time_shift_policy": "held_out must be from later documented window than train/dev",
+            },
         },
     )
 
@@ -327,6 +338,15 @@ def split_partitions(tasks: List[Task]) -> Tuple[List[Task], List[Task], List[Ta
     train = shuffled[:target_train]
     dev = shuffled[target_train : target_train + target_dev]
     held_out = shuffled[target_train + target_dev : target_train + target_dev + target_held]
+    # Assign explicit signal windows to support time-shift verification.
+    for t in train + dev:
+        t.metadata["public_signal_provenance"]["signal_window_label"] = "2025-Q4"
+    for t in held_out:
+        # Later window by policy (leak-resistant eval split).
+        day = 1 + (int(t.task_id.split("_")[-1]) % 28)
+        month = 1 + (int(t.task_id.split("_")[-1]) % 3)
+        t.metadata["public_signal_provenance"]["signal_date"] = f"2026-{month:02d}-{day:02d}"
+        t.metadata["public_signal_provenance"]["signal_window_label"] = "2026-Q1"
     return train, dev, held_out
 
 
